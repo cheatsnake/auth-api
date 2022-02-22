@@ -1,4 +1,3 @@
-import { UNAUTHORIZED } from "constants/error.constants";
 import { NextFunction, Request, Response } from "express";
 import ErrorUtil from "../utils/error.util";
 import jwtUtil from "../utils/jwt.util";
