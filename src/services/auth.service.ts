@@ -8,6 +8,14 @@ import { addSlots } from "../helpers";
 import jwtUtil from "../utils/jwt.util";
 import tokenService from "./token.service";
 import mailUtil from "../utils/mail.util";
+import ErrorUtil from "../utils/error.util";
+import {
+    BAD_ACTIVATION,
+    EXIST_USERNAME,
+    USED_EMAIL,
+    WRONG_PASSWORD,
+    WRONG_USERNAME,
+} from "../constants/error.constants";
 
 class AuthService {
     async register(dto: UserRegisterDto) {
@@ -17,14 +25,13 @@ class AuthService {
                 [dto.username]
             );
             if (checkUsername.rows.length)
-                throw new Error("Username is already used");
+                throw ErrorUtil.BadRequest(EXIST_USERNAME);
 
             const checkEmail = await pool.query(
                 `SELECT * FROM ${USER_TABLE} WHERE email = $1`,
                 [dto.email]
             );
-            if (checkEmail.rows.length)
-                throw new Error("Email is already used");
+            if (checkEmail.rows.length) throw ErrorUtil.BadRequest(USED_EMAIL);
 
             const passwordHash = await bcrypt.hash(dto.password, 7);
             const activationLink = uuidv4();
@@ -70,7 +77,7 @@ class AuthService {
             [dto.username]
         );
         if (!user.rows[0]) {
-            throw new Error(`User '${dto.username}' does not exist`);
+            throw ErrorUtil.BadRequest(WRONG_USERNAME);
         }
 
         const checkPassword = await bcrypt.compare(
@@ -78,7 +85,7 @@ class AuthService {
             user.rows[0].password_hash
         );
         if (!checkPassword) {
-            throw new Error("Wrong password");
+            throw ErrorUtil.BadRequest(WRONG_PASSWORD);
         }
 
         const tokens = jwtUtil.generateTokens({
@@ -102,7 +109,7 @@ class AuthService {
             `SELECT * FROM ${USER_TABLE} WHERE activation_link = $1`,
             [activationLink]
         );
-        if (!user.rows.length) throw new Error("Incorrect activation link");
+        if (!user.rows.length) throw ErrorUtil.BadRequest(BAD_ACTIVATION);
 
         await pool.query(
             `UPDATE ${USER_TABLE} SET is_activated = $1 WHERE activation_link = $2`,

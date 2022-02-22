@@ -6,6 +6,7 @@ import {
     USER_TABLE,
 } from "../constants/database.constants";
 import jwtUtil from "../utils/jwt.util";
+import ErrorUtil from "../utils/error.util";
 
 class TokenService {
     async saveToken(userId: number, refreshToken: string) {
@@ -39,13 +40,13 @@ class TokenService {
     }
 
     async refresh(refreshToken: string) {
-        if (!refreshToken) throw new Error("User is not authorized");
+        if (!refreshToken) throw ErrorUtil.UnauthorizeError();
 
         const userData = jwtUtil.validateRefreshToken(refreshToken);
         const tokenData = await this.findToken(refreshToken);
 
         if (!userData || !tokenData) {
-            throw new Error("User is not authorized");
+            throw ErrorUtil.UnauthorizeError();
         }
 
         const user = await pool.query(

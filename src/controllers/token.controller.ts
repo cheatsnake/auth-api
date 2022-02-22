@@ -13,7 +13,7 @@ class TokenController {
             });
             return res.json(userData);
         } catch (error) {
-            res.status(400).json({ message: String(error) });
+            next(error);
         }
     }
 }

@@ -7,7 +7,7 @@ class AppController {
             const data = appService.adminData();
             return res.json({ data });
         } catch (error) {
-            res.status(400).json({ message: String(error) });
+            next(error);
         }
     }
 
@@ -16,7 +16,7 @@ class AppController {
             const data = appService.protectedData();
             return res.json({ data });
         } catch (error) {
-            res.status(400).json({ message: String(error) });
+            next(error);
         }
     }
 
@@ -25,7 +25,7 @@ class AppController {
             const data = appService.guestData();
             return res.json({ data });
         } catch (error) {
-            res.status(400).json({ message: String(error) });
+            next(error);
         }
     }
 
@@ -34,7 +34,7 @@ class AppController {
             const data = appService.pulbicData();
             return res.json({ data });
         } catch (error) {
-            res.status(400).json({ message: String(error) });
+            next(error);
         }
     }
 }

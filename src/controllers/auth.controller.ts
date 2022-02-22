@@ -12,7 +12,7 @@ class AuthController {
             });
             return res.status(201).json(user);
         } catch (error) {
-            res.status(400).json({ message: String(error) });
+            next(error);
         }
     }
 
@@ -25,7 +25,7 @@ class AuthController {
             });
             return res.status(200).json(user);
         } catch (error) {
-            res.status(400).json({ message: String(error) });
+            next(error);
         }
     }
 
@@ -35,7 +35,7 @@ class AuthController {
             await authService.activate(activationLink);
             return res.redirect(String(process.env.API_URL));
         } catch (error) {
-            res.status(400).json({ message: String(error) });
+            next(error);
         }
     }
 
@@ -46,7 +46,7 @@ class AuthController {
             res.clearCookie("refreshToken");
             return res.status(200).json();
         } catch (error) {
-            res.status(400).json({ message: String(error) });
+            next(error);
         }
     }
 }

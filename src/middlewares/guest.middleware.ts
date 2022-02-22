@@ -1,24 +1,23 @@
+import { UNAUTHORIZED } from "constants/error.constants";
 import { NextFunction, Request, Response } from "express";
+import ErrorUtil from "../utils/error.util";
 import jwtUtil from "../utils/jwt.util";
 
 export default function (req: Request, res: Response, next: NextFunction) {
     try {
         const authHeader = req.headers.authorization;
         if (!authHeader) {
-            //return next(AuthError.UnauthorizeError());
-            throw new Error("Not authorized");
+            throw ErrorUtil.UnauthorizeError();
         }
 
         const accessToken = authHeader.split(" ")[1];
         if (!accessToken) {
-            //return next(AuthError.UnauthorizeError());
-            throw new Error("Not authorized");
+            throw ErrorUtil.UnauthorizeError();
         }
 
         const userData = jwtUtil.validateAccessToken(accessToken);
         if (!userData) {
-            //return next(AuthError.UnauthorizeError());
-            throw new Error("Not authorized");
+            throw ErrorUtil.UnauthorizeError();
         }
 
         //@ts-ignore
@@ -26,7 +25,6 @@ export default function (req: Request, res: Response, next: NextFunction) {
 
         next();
     } catch (error) {
-        throw error;
-        //return next(AuthError.UnauthorizeError());
+        next(error);
     }
 }
