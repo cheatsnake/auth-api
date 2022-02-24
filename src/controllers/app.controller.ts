@@ -37,6 +37,15 @@ class AppController {
             next(error);
         }
     }
+
+    async getHomePage(req: Request, res: Response, next: NextFunction) {
+        try {
+            const data = appService.homePage();
+            return res.send(data);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default new AppController();

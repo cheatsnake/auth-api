@@ -14,6 +14,10 @@ class AppService {
     pulbicData() {
         return "This text can be read by anyone";
     }
+
+    homePage() {
+        return "<h1>Hello World!</h1>";
+    }
 }
 
 export default new AppService();

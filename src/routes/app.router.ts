@@ -20,5 +20,6 @@ router.get(
 );
 router.get("/guest", guestMiddleware, appController.getGuestData);
 router.get("/public", appController.getPublicData);
+router.get("/", appController.getHomePage);
 
 export default router;
