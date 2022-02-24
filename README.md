@@ -71,8 +71,8 @@ npm run dev
 - **POST** _/auth/login_ - Enter to the account by username & password
 ```json
 {
-  "username": "test",
-  "password": "123"
+  "username": "user",
+  "password": "123456"
 }
 ```
 
