@@ -1,5 +1,6 @@
 import request from "supertest";
 import app from "../../src/app";
+import { FORBIDDEN } from "../../src/constants/error.constants";
 import { UserRegisterDto } from "../../src/dto/user.dto";
 
 const userDto: UserRegisterDto = {
@@ -55,5 +56,14 @@ describe("App module", () => {
         expect(response.body.data).toEqual(
             "This text can only be read by users with verified email"
         );
+    });
+
+    test("GET /admin - get an admin data", async () => {
+        const response = await request(app)
+            .get("/admin")
+            .set("Authorization", `Bearer ${token}`);
+
+        expect(response.statusCode).toEqual(403);
+        expect(response.body.message).toEqual(FORBIDDEN);
     });
 });
