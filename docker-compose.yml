@@ -1,0 +1,37 @@
+version: "3.0"
+
+services:
+    postgres:
+        container_name: postgres
+        image: postgres:14
+        env_file:
+            - .env
+        environment:
+            PG_DATA: /var/lib/postgresql/data
+        ports:
+            - 5432:5432
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+            - ./sql/role_table.sql:/docker-entrypoint-initdb.d/1_role_table.sql
+            - ./sql/user_table.sql:/docker-entrypoint-initdb.d/2_user_table.sql
+            - ./sql/token_table.sql:/docker-entrypoint-initdb.d/3_token_table.sql
+        restart: always
+    main:
+        container_name: auth-app
+        build:
+            context: .
+        env_file:
+            - .env
+        volumes:
+            - .:/app
+            - /app/node_modules
+        ports:
+            - 5000:5000
+            - 9229:9229
+        command: npm run dev
+        depends_on:
+            - postgres
+        restart: always
+
+volumes:
+    pgdata:
