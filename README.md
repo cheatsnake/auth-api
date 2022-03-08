@@ -11,11 +11,11 @@ Complete API for user authentication with email confirm &amp; JWT &amp; roles.
 -   JsonWebToken
 -   BcryptJS
 
-## 🚀 Setup
+## 🚀 Setup local server
 
 1. Clone this repo and install dependencies:
 
-```sh
+```bash
 npm install
 ```
 
@@ -46,21 +46,33 @@ SMTP_SERVICE=EmailService
 
 4. Create production build & run server:
 
-```sh
+```bash
 npm run build
 ```
 
-```sh
+```bash
 npm start
 ```
 
 Or launch server in develepment mode with nodemon:
 
-```sh
+```bash
 npm run dev
 ```
 
 > Base server url: http://localhost:5000
+
+## 🐳 Run with docker
+
+To start the server and database in docker containers you only need to execute 2 simple commands inside the project directory:
+
+```bash
+docker-compose build
+```
+
+```bash
+docker-compose up
+```
 
 ## 📌 End-points
 
